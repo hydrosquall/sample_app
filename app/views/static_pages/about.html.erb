@@ -1,2 +1,12 @@
-<h1>About Us</h1>
-<p>This is some temporary information about an imaginary fish</p>
+<% provide(:title, 'About Us') 	%>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Ruby on Rails Tutorial Sample App | <%= yield(:title) %></title>
+</head>
+<body>
+	<h1>About Us</h1>
+	<p>This is some temporary information about an imaginary fish</p>
+</body>
+</html>
+
