@@ -14,6 +14,10 @@ module SessionsHelper
 		@current_user ||= User.find_by_remember_token(cookies[:remember_token]) # only assigns if the variable is currently undefined
 	end
 
+	def current_user?(user)
+		user == current_user
+	end
+
 	def signed_in?
 		!current_user.nil?
 	end
@@ -21,5 +25,14 @@ module SessionsHelper
 	def sign_out
 		self.current_user = nil
 		cookies.delete(:remember_token)
+	end
+
+	def redirect_back_or(default)
+		redirect_to(session[:return_to] || default)
+		session.delete(:return_to)
+	end
+
+	def store_location
+		session[:return_to] = request.fullpath #stores current page location full filepath
 	end
 end
