@@ -3,6 +3,7 @@ class UsersController < ApplicationController
    before_filter :signed_in_user, only: [:index, :edit, :update, :destroy]
    before_filter :correct_user, only: [:edit, :update]
    before_filter :admin_user, only: :destroy
+   before_filter :unsigned_user, only: [:new, :create]
 
   def index
     @users = User.paginate(page: params[:page])
@@ -46,9 +47,16 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    User.find(params[:id]).destroy
-    flash[:success] = "User destroyed"
-    redirect_to users_path
+    @user = User.find(params[:id])
+
+    if current_user.admin? && !current_user?(@user)
+      User.find(params[:id]).destroy
+      flash[:success] = "User destroyed"
+      redirect_to users_path
+    else
+      flash[:error] = "Hey, no need to destroy yourself!"
+      redirect_to users_path
+    end
   end
 
   private
@@ -61,6 +69,12 @@ class UsersController < ApplicationController
       end
       # notice condensed versoin of = flash[:notice] ="Please Sign in"
       # redirect_to signin_path. Works for error key, but not for success.
+    end
+
+    def unsigned_user
+      if signed_in?
+        redirect_to root_path, notice: "You're signed in already! No need for another account."
+      end
     end
 
     def correct_user

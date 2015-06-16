@@ -50,6 +50,19 @@ describe "AuthenticationPages" do
 
 			describe "for non-signed in users" do
 				make_dummy_user
+
+				# technically could make an array of all pages on site, and make it visit each one
+				describe "visiting the homepage" do
+					before {visit root_path }
+					describe "should not see profile page"do
+						it { should_not have_link('Profile') }
+					end
+
+					describe "should not see Settings page"do
+						it { should_not have_link('Settings') }
+					end
+				end
+
 				describe "in the users controller" do
 					describe "visiting the edit page" do
 						before {visit edit_user_path(user)}
@@ -78,6 +91,14 @@ describe "AuthenticationPages" do
 					describe "after signing in" do
 						it "should render the desired protected page" do
 							page.should have_selector('title', text:'Edit user')
+						end
+
+						# Test for Friendly Forwarding
+						describe "when signing in again" do
+							before { valid_sign_in(user) }
+							it "should render the default profile page" do
+								page.should have_selector('title', text: user.name)
+							end
 						end
 					end
 				end

@@ -1,7 +1,7 @@
 <footer class="footer">
 	<small>
-		<a href="#">Rails Tutorial</a>
-		by Michael Hartl
+		<a href="#">Rails Tutorial Implemented</a>
+		by <a href="http://www.cameronyick.us">Cam Yick</a>
 	</small>
 
 	<nav>
@@ -9,6 +9,9 @@
 			<li><%= link_to "About", about_path %></li>
 			<li><%= link_to "Contact", contact_path %></li>
 			<li><a href="http://news.railtutorials.org">News</a></li>
+
+			<li> Server Type: <%= request.server_software() %></li>
+			<!-- <li><%= request.request_parameters() %></li> -->
 		</ul>
 	</nav>
 </footer>

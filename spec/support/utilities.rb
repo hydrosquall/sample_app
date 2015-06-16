@@ -8,7 +8,6 @@ def valid_sign_in(user)
 	click_button "Sign in"
     #sign in when not using capybara as well
     cookies[:remember_token] = user.remember_token
-
 end
 
 RSpec::Matchers.define :have_error_message do |message|
@@ -22,7 +21,7 @@ def dummy_signup
 	fill_in "Name", 	with: "Example User"
 	fill_in "Email", 	with: "username@example.com"
 	fill_in "Password", with: "foobar"
-	fill_in "Confirmation", with: "foobar"
+	fill_in "Confirm Password", with: "foobar"
 end
 
 def make_dummy_user
