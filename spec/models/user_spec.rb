@@ -2,11 +2,14 @@
 #
 # Table name: users
 #
-#  id         :integer         not null, primary key
-#  name       :string(255)
-#  email      :string(255)
-#  created_at :datetime        not null
-#  updated_at :datetime        not null
+#  id              :integer         not null, primary key
+#  name            :string(255)
+#  email           :string(255)
+#  created_at      :datetime        not null
+#  updated_at      :datetime        not null
+#  password_digest :string(255)
+#  remember_token  :string(255)
+#  admin           :boolean         default(FALSE)
 #
 
 require 'spec_helper'
@@ -23,8 +26,6 @@ describe User do
   it {should respond_to(:password) }
   it {should respond_to(:password_confirmation) }
 
- 
-
   it { should respond_to(:password_confirmation) }
   it { should respond_to(:remember_token) }
   it { should respond_to(:admin) }
@@ -36,7 +37,7 @@ describe User do
   describe "with admin attribute set to 'true'" do
     before { @user.toggle!(:admin) }
 
-    it {should be_admin}
+    it { should be_admin }
   end
 
 
