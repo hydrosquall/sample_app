@@ -11,6 +11,7 @@ class UsersController < ApplicationController
 
   def show
   	@user = User.find(params[:id])
+    @microposts = @user.microposts.paginate(page: params[:page] )
   end
 
   def new
@@ -60,16 +61,6 @@ class UsersController < ApplicationController
   end
 
   private
-
-    def signed_in_user
-
-      unless signed_in?
-        store_location
-        redirect_to signin_path, notice: "Please sign in."
-      end
-      # notice condensed versoin of = flash[:notice] ="Please Sign in"
-      # redirect_to signin_path. Works for error key, but not for success.
-    end
 
     def unsigned_user
       if signed_in?

@@ -1,10 +1,20 @@
 module SessionsHelper
+	# Helper functions are available in views by default, but you can add them to controllers by including SessionsHelper in Application Controller
 
 	def sign_in(user)
 		cookies.permanent[:remember_token] = user.remember_token 
 		# note alt syntax cookies[:remember_token] = {value: user.remember_token, expires: 20.years.from_now.utc }
 		self.current_user = user
 	end
+
+	 def signed_in_user
+      unless signed_in?
+        store_location
+        redirect_to signin_path, notice: "Please sign in."
+      end
+      # notice condensed versoin of = flash[:notice] ="Please Sign in"
+      # redirect_to signin_path. Works for error key, but not for success.
+    end
 
 	def current_user=(user)
 		@current_user = user

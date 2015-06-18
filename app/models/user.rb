@@ -15,6 +15,8 @@
 class User < ActiveRecord::Base
   attr_accessible :email, :name, :password, :password_confirmation  #note admin attribute not mass-assignable, 
   has_secure_password
+  has_many :microposts, dependent: :destroy #posts go when users go
+
 
   #before_save{ |user| user.email = email.downcase }
   # alternate one line way of casing email
@@ -31,6 +33,13 @@ class User < ActiveRecord::Base
   					
   validates :password, length: { minimum: 6 }
   validates :password_confirmation, presence:true
+
+  def feed
+  	# preliminary implementation. The #id gets escaped to prevent SQL injection. this is technically equivalent to writing 
+  	# microposts
+  	Micropost.where("user_id = ?", id)
+
+  end
 
 
   private

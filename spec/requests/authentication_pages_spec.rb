@@ -50,7 +50,6 @@ describe "AuthenticationPages" do
 
 			describe "for non-signed in users" do
 				make_dummy_user
-
 				# technically could make an array of all pages on site, and make it visit each one
 				describe "visiting the homepage" do
 					before {visit root_path }
@@ -79,6 +78,23 @@ describe "AuthenticationPages" do
 						it {should have_selector('title', text:'Sign in')}
 					end
 				end
+
+				describe "in the Microposts controller" do
+					describe "submitting to the create action" do
+					  	  before { post microposts_path }
+						  specify { response.should redirect_to(signin_path) }
+					end
+
+					describe "submitting to the destroy action" do
+						before do
+							micropost = FactoryGirl.create(:micropost)
+							delete micropost_path(micropost)
+						end
+						specify { response.should  redirect_to(signin_path) }
+					end
+				end
+
+		
 
 				describe "when attempting to visit a protected page" do
 					  before do
