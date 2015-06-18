@@ -3,9 +3,23 @@
 	<%= render 'shared/error_messages', object: f.object %>
 
 	<div class="field">
-		<%= f.text_area :content, placeholder: "Compose new micropost..." %>
+		<%= f.text_area :content, placeholder: "Compose new micropost..." , class: "new_message" %>
 	</div>
+	
+	<%= f.label "140 characters left", id: "counter" %>
+
 	
 	<%= f.submit "Post", class: "btn btn-large btn-primary" %>
 
 <% end %>
+
+<script>
+var main = function(){
+    $('.new_message').keyup(function(){
+        var postLength = $(this).val().length;
+        var charactersLeft = 140-postLength;
+        $('#counter').text(charactersLeft + " characters left");
+    });
+};
+$(document).ready(main);
+</script>
