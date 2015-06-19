@@ -15,7 +15,16 @@
 class User < ActiveRecord::Base
   attr_accessible :email, :name, :password, :password_confirmation  #note admin attribute not mass-assignable, 
   has_secure_password
+
   has_many :microposts, dependent: :destroy #posts go when users go
+  has_many :relationships, foreign_key: "follower_id", dependent: :destroy
+  has_many :followed_users, through: :relationships, source: :followed  # assembles array using followed_id in the relationships table.
+
+  #clever table reversal. Note explicit definition of class, otherwise it would look for "ReverseRelationships" class
+  has_many :reverse_relationships,  foreign_key: "followed_id",     
+                                    class_name: "Relationship",
+                                    dependent: :destroy
+  has_many :followers, through: :reverse_relationships, source: :follower #technically can ignore third param because rails will seek followed_id automatically given "followers"
 
 
   #before_save{ |user| user.email = email.downcase }
@@ -41,8 +50,20 @@ class User < ActiveRecord::Base
 
   end
 
+  def following?(other_user)
+    relationships.find_by_followed_id(other_user.id)
+  end
+
+  def follow!(other_user)
+    relationships.create!(followed_id: other_user.id) #note that presence of "self" is implied, it's a stylistic choice
+  end
+
+  def unfollow!(other_user)
+    relationships.find_by_followed_id(other_user.id).destroy
+  end
 
   private
+
   	def create_remember_token
   		self.remember_token = SecureRandom.urlsafe_base64
   	end

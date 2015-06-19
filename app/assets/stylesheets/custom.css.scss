@@ -148,6 +148,35 @@ aside {
 
 }
 
+.stats {
+	overflow:auto;
+	a {
+		float: left;
+		padding: -0px 10px;
+		border-left: 1px solid  $grayLighter;
+		color: gray;
+	}
+	&:first-child {
+		padding-left: -0px;
+		border: -0px;
+	}
+	&:hover {
+		text-decoration: none;
+		color:$blue
+	}
+	strong {
+		display: block;
+	}
+}
+
+.user-avatars {
+	overflow: auto;
+	margin-top: 10px;
+	.gravatar {
+		margin: 1px 1px;
+	}
+}
+
 // Forms
 input, textarea, select, .uneditable-input{
 	border: 1px solid #bbb;

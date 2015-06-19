@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   # only allow updating user values if you're signed in already
-   before_filter :signed_in_user, only: [:index, :edit, :update, :destroy]
+   before_filter :signed_in_user, only: [:index, :edit, :update, :destroy, :following, :followers]
    before_filter :correct_user, only: [:edit, :update]
    before_filter :admin_user, only: :destroy
    before_filter :unsigned_user, only: [:new, :create]
@@ -58,6 +58,20 @@ class UsersController < ApplicationController
       flash[:error] = "Hey, no need to destroy yourself!"
       redirect_to users_path
     end
+  end
+
+  def following
+    @title = "Following"
+    @user = User.find(params[:id])
+    @users = @user.followed_users.paginate(page: params[:page])
+    render 'show_follow'
+  end
+
+  def followers
+    @title = "Followers"
+    @user = User.find(params[:id])
+    @users = @user.followers.paginate(page: params[:page])
+    render 'show_follow'
   end
 
   private
